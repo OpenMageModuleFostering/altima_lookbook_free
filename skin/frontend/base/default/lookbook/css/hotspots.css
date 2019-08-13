@@ -89,7 +89,7 @@
 .camera_target_content {
 	bottom: 0;
 	left: 0;
-	overflow: hidden;
+	/*overflow: hidden;*/
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -206,7 +206,7 @@
 	left: 0;
 	position: relative;
 	right:0;
-	z-index: 4;
+	z-index: 0;
 }
 .camera_wrap .camera_pag .camera_pag_ul {
 	list-style: none;
@@ -364,14 +364,19 @@
 	text-align: center;
 }
 .camera_thumbs_cont ul li {
-	display: inline;
-	padding: 0 4px;
+	display: inline-block;
+        /*float: left;*/
+	padding: 0 3px;
+        margin: 0 !important;
 }
 .camera_thumbs_cont ul li > img {
 	border: 1px solid;
 	cursor: pointer;
 	margin-top: 5px;
 	vertical-align:bottom;
+}
+.camera_thumbs_cont ul li.pix_thumb{
+    margin-left: 0 !important;
 }
 .camera_clear {
 	display: block;
@@ -486,15 +491,18 @@
     position:absolute;
 }
 
-.hotspot:hover .product-info {
-    display:block;
+.hotspot:hover .product-info,
+.hotspot.hover .product-info {
+    /*display:block;*/
+    visibility: visible;
 }
 
-.hotspot:hover .hotspot-icon {
+.hotspot:hover .hotspot-icon,
+.hotspot.hover .hotspot-icon {
         z-index:101; 
 }
         
-.product-info {
+.hotspot .product-info {
     background: url(../images/info-bg.png) repeat 0 0 transparent;
     border-top: 2px solid #FFFFFF;
     color: #686767;
@@ -504,8 +512,9 @@
     max-width: 200px;
     padding: 12px;
     position: absolute;
-    display:none;
-    z-index:100; 
+    /*display:none;*/
+    visibility: hidden;
+    z-index:999; 
 
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -604,4 +613,21 @@
 
 .hotspot-icon {
     position: absolute;
+}
+
+@media screen and (max-width:400px) {
+    .hotspot {
+        display: none;
+    }
+    
+    .camera_thumbs_cont{
+        display: none;
+    }
+    
+    .camera_target_content {
+        overflow: hidden;
+    }
+    .camera_wrap{
+        margin-bottom: 25px !important;
+    }
 }

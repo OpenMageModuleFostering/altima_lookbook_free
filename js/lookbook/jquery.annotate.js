@@ -256,6 +256,8 @@
             newNote.width = 30;
             newNote.height = 30;
             newNote.text = "";
+            newNote.imgH = this.image.height();
+            newNote.imgW = this.image.width();
             this.note = newNote;
         }
 

@@ -24,7 +24,7 @@
 <config>
     <modules>
         <Altima_Lookbook>
-            <version>1.0.1</version>
+            <version>1.1.0</version>
         </Altima_Lookbook>
     </modules>
     <frontend>

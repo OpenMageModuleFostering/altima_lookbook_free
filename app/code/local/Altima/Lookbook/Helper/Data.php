@@ -130,10 +130,30 @@ class Altima_Lookbook_Helper_Data extends Mage_Core_Helper_Abstract
          */
         if (!file_exists($imageResizedPath) && file_exists($imgPathFull)) :
             $imageObj = new Varien_Image($imgPathFull);
-            $imageObj->constrainOnly(TRUE);
+            $imageObj->constrainOnly(FALSE);
             $imageObj->keepAspectRatio(TRUE);
             $imageObj->keepTransparency(TRUE);
-            $imageObj->resize($width,$height);
+            /***********************************/
+            //$imageObj->resize($width,$height);
+            $imageObj->keepFrame(FALSE);
+            if (($width / $height) > ($imageObj->getOriginalWidth() / $imageObj->getOriginalHeight())){
+                  $imageObj->resize($width, null);
+            }else{
+                  $imageObj->resize(null, $height);
+            }            
+            $cropX = 0;
+            $cropY = 0;
+  if ($imageObj->getOriginalWidth() > $width)
+  {
+    $cropX = intval(($imageObj->getOriginalWidth() - $width) / 2);
+  }
+  if ($imageObj->getOriginalHeight() > $height)
+  {
+    $cropY = intval(($imageObj->getOriginalHeight() - $height) / 2);
+  }
+            
+            $imageObj->crop($cropY,$cropX,$cropX,$cropY);
+            /********************/
             $imageObj->save($imageResizedPath);
         endif;
  
