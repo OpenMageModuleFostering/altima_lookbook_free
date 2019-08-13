@@ -42,8 +42,8 @@ class Altima_Lookbook_Block_Adminhtml_Lookbook_Edit_Form_Element_Hotspots extend
                 <script type="text/javascript">
                 //<![CDATA[                    
                         function InitHotspotBtn() {
-                             if ($j("img#LookbookImage").attr("id")) {
-                				var annotObj = $j("img#LookbookImage").annotateImage({                				    
+                             if (jQuery("img#LookbookImage").attr("id")) {
+                				var annotObj = jQuery("img#LookbookImage").annotateImage({                				    
                 					editable: true,
                 					useAjax: false,';
    if ($this->getValue()) $html .= 'notes: '. $this->getValue() . ',';
@@ -51,12 +51,12 @@ class Altima_Lookbook_Block_Adminhtml_Lookbook_Edit_Form_Element_Hotspots extend
        $html .= '                   input_field_id: "hotspots"                            
                 				});
                                 
-                                $j("img#LookbookImage").before(\'<div class="products-link"><a href="'.$products_link.'" title="'.$helper->__('Products List').'" target="_blank">'. $helper->__('Products List').'</a></div>\');
+                                jQuery("img#LookbookImage").before(\'<div class="products-link"><a href="'.$products_link.'" title="'.$helper->__('Products List').'" target="_blank">'. $helper->__('Products List').'</a></div>\');
                                 
-                                var top = Math.round($j("img#LookbookImage").height()/2);
-                                $j(".image-annotate-canvas").append(\'<div class="hotspots-msg" style="top:\' + top + \'px;">'. $helper->__('Rollover on the image to see hotspots').'</div>\');
+                                var top = Math.round(jQuery("img#LookbookImage").height()/2);
+                                jQuery(".image-annotate-canvas").append(\'<div class="hotspots-msg" style="top:\' + top + \'px;">'. $helper->__('Rollover on the image to see hotspots').'</div>\');
                         
-                                $j(".image-annotate-canvas").hover(
+                                jQuery(".image-annotate-canvas").hover(
                                       function () {
                                             ShowHideHotspotsMsg();
                                       },

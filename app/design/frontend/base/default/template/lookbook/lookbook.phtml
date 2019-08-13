@@ -84,8 +84,8 @@ if ($helper->getEnabled()) :
     		</div>
     <script type="text/javascript">
      //<![CDATA[
-    		$j(document).ready(function(){
-    			$j('#lookbook .slides').slides({
+    		jQuery(document).ready(function(){
+    			jQuery('#lookbook .slides').slides({
     				preload: true,
     				preloadImage: '<?php echo $skin_img_folder;?>loading.gif',
     				play: 5000,
@@ -93,22 +93,22 @@ if ($helper->getEnabled()) :
     				hoverPause: true,
                     hotspots:<?php echo json_encode($hotspots);?>,
     				animationStart: function(current){
-    					$j('#lookbook .caption').animate({
+    					jQuery('#lookbook .caption').animate({
     						bottom:-35
     					},100);
-                        $j('#lookbook .hotspot:visible').each(function() {
-                               $j(this).remove();
+                        jQuery('#lookbook .hotspot:visible').each(function() {
+                               jQuery(this).remove();
                         });
     				},
     				animationComplete: function(current){
-    					$j('#lookbook .caption').animate({
+    					jQuery('#lookbook .caption').animate({
     						bottom:0
     					},200);
                         var spots = this.hotspots[current-1];
                         SetHotspots(spots);
     				},
     				slidesLoaded: function() {
-    					$j('#lookbook .caption').animate({
+    					jQuery('#lookbook .caption').animate({
     						bottom:0
     					},200);
                         var spots = this.hotspots[0];
@@ -121,10 +121,10 @@ if ($helper->getEnabled()) :
                         var i=0;
                         hotspots.each(function() {
                               if (!document.getElementById(hotspots[i].id)) {
-                                  $j('#lookbook .slide:visible').append('<div class="hotspot" id="'+hotspots[i].id+'" style="left:'+hotspots[i].left+'px; top:'+hotspots[i].top+'px; width:'+hotspots[i].width+'px; height:'+hotspots[i].height+'px;">'+hotspots[i].text+'</div>');
+                                  jQuery('#lookbook .slide:visible').append('<div class="hotspot" id="'+hotspots[i].id+'" style="left:'+hotspots[i].left+'px; top:'+hotspots[i].top+'px; width:'+hotspots[i].width+'px; height:'+hotspots[i].height+'px;">'+hotspots[i].text+'</div>');
                                   
-                                  var infoblock = $j('#lookbook .slide:visible #'+hotspots[i].id).find('.product-info');
-                                  var slide = $j('#lookbook .slide:visible');
+                                  var infoblock = jQuery('#lookbook .slide:visible #'+hotspots[i].id).find('.product-info');
+                                  var slide = jQuery('#lookbook .slide:visible');
                                   var imgwidth = slide.width();
                                   var infowidth = infoblock.width();             
                                   var hspt_width_hf = parseInt(hotspots[i].width/2);
@@ -132,7 +132,7 @@ if ($helper->getEnabled()) :
                                   infoblock.find('.info-icon').css('left',hspt_width_hf+'px');                        
                                    if (((leftposition + infowidth + 10)> imgwidth) && (leftposition>(imgwidth-leftposition))) 
                                    {
-                                        if ( $j.browser.msie && $j.browser.version=='8.0') {
+                                        if ( jQuery.browser.msie && jQuery.browser.version=='8.0') {
                                             if (leftposition-5<infowidth) {
                                             infoblock.css('width', leftposition-20 +'px');
                                             infowidth = infoblock.width();                                            
@@ -164,7 +164,7 @@ if ($helper->getEnabled()) :
                                   var topposition = hotspots[i].top+hspt_height_hf; 
                                   if (((topposition + infoheight + 20)> imgheight) && (topposition>(imgheight-topposition))) 
                                    {
-                                        if ( $j.browser.msie && $j.browser.version=='8.0') {
+                                        if ( jQuery.browser.msie && jQuery.browser.version=='8.0') {
                                             if (topposition-5<infoheight) {
                                              infoblock.css('height', topposition-10 +'px');
                                              infoheight = infoblock.height();                                            

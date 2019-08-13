@@ -27,7 +27,7 @@
     <lookbook_index_index>
          <reference name="head">
                 <action method="addCss"><stylesheet>lookbook/css/hotspots.css</stylesheet></action>
-                <action method="addJs"><script>jquery/jquery-1.7.min.js</script></action>
+                <action method="addJs"><script>jquery/jquery-1.8.2.min.js</script></action>
 		        <action method="addJs"><script>jquery/jquery.noconflict.js</script></action>                 
                 <action method="addJs"><script>lookbook/slides.min.jquery.js</script></action>
             </reference>

@@ -32,7 +32,7 @@ class Altima_Lookbook_Model_Layout_Generate_Observer {
                         $updates = $page->getLayoutUpdateXml();
                     	$newupdates = '<reference name="head">
                             <action method="addCss"><stylesheet>lookbook/css/hotspots.css</stylesheet></action>
-                            <action method="addJs"><script>jquery/jquery-1.7.min.js</script></action>
+                            <action method="addJs"><script>jquery/jquery-1.8.2.min.js</script></action>
             		    <action method="addJs"><script>jquery/jquery.noconflict.js</script></action>                 
 				<action method="addItem"><type>skin_js</type><name>lookbook/js/slides.min.jquery.js</name></action> 
                         </reference>';

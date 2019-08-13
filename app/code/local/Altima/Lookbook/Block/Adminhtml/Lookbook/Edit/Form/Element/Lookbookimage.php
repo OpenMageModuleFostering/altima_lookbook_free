@@ -41,8 +41,7 @@ class Altima_Lookbook_Block_Adminhtml_Lookbook_Edit_Form_Element_Lookbookimage e
     
     $html = '<script type="text/javascript">
                 //<![CDATA[
-
-                $j(document).ready(function() { 
+                jQuery(document).ready(function() { 
                     
                   InitHotspotBtn(); 
                   
@@ -56,27 +55,27 @@ class Altima_Lookbook_Block_Adminhtml_Lookbook_Edit_Form_Element_Lookbookimage e
                         onComplete: function(id, fileName, responseJSON){                           
                                     if (responseJSON.success) 
                                     {
-                                        if ($j(\'#LookbookImageBlock\')) 
+                                        if (jQuery(\'#LookbookImageBlock\')) 
                                         {
-                                          $j.each($j(\'#LookbookImageBlock\').children(),function(index) {
-                                            $j(this).remove();
+                                          jQuery.each(jQuery(\'#LookbookImageBlock\').children(),function(index) {
+                                            jQuery(this).remove();
                                           });
                                         }
-                                       $j(\'#LookbookImageBlock\').append(\'<img id="LookbookImage"';
+                                       jQuery(\'#LookbookImageBlock\').append(\'<img id="LookbookImage"';
                                        $html .= ' src="'.$media_url.'lookbook/\'+responseJSON.filename+\'" alt="\'+responseJSON.filename+\'"'; 
                                        $html .= ' width="\'+responseJSON.dimensions.width+\'" height="\'+responseJSON.dimensions.height+\'"/>\');
                                        
-                                        if ($j(\'#advice-required-entry-image\')) 
+                                        if (jQuery(\'#advice-required-entry-image\')) 
                                         {
-                                            $j(\'#advice-required-entry-image\').remove();
+                                            jQuery(\'#advice-required-entry-image\').remove();
                                         }
-                                        $j(\'#LookbookImage\').load(function(){
-                                           $j(this).attr(\'width\',responseJSON.dimensions.width);
-                                           $j(this).attr(\'height\',responseJSON.dimensions.height);
+                                        jQuery(\'#LookbookImage\').load(function(){
+                                           jQuery(this).attr(\'width\',responseJSON.dimensions.width);
+                                           jQuery(this).attr(\'height\',responseJSON.dimensions.height);
                                            InitHotspotBtn();
                                         });                       
-                                        $j(\'#image\').val(\'lookbook/\'+responseJSON.filename);
-                                        $j(\'#image\').removeClass(\'validation-failed\');
+                                        jQuery(\'#image\').val(\'lookbook/\'+responseJSON.filename);
+                                        jQuery(\'#image\').removeClass(\'validation-failed\');
                                     }
 
                         }

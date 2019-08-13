@@ -198,13 +198,26 @@ class Altima_Lookbook_Helper_Data extends Mage_Core_Helper_Abstract
                 }
                 
                     $html_content .=  '">';
-                if ($product_details) {                    
-        			$_p_price = $_coreHelper->currency($product_details->getPrice(),true,false);
-        			$_p_url = $product_details->getProductUrl();
-        			$html_content .= '<div><a href=\''.$_p_url.'\'>'.$_p_name.'</a></div>';
-        			if($product_details->getPrice()){
-        				$html_content .= '<div class="price">'.$_p_price.'</div>';
-        			}
+                if ($product_details) {
+        			$_p_price = $_coreHelper->currency($product_details->getFinalPrice(),true,false);
+                    if($product_details->isAvailable())
+                    {
+                        $_p_url = $product_details->getProductUrl();                                                                                    
+            			$html_content .= '<div><a href=\''.$_p_url.'\'>'.$_p_name.'</a></div>';
+                    }
+                    else
+                    {
+                        $html_content .= '<div>'.$_p_name.'</div>';
+                        $html_content .= '<div class="out-of-stock"><span>'. $this->__('Out of stock') .'</span></div>';                        
+                    }
+
+                    if($product_details->getFinalPrice()){
+                            if ($product_details->getPrice()>$product_details->getFinalPrice()){
+                                    $regular_price = $_coreHelper->currency($product_details->getPrice(),true,false);
+                                    $_p_price = '<div class="old-price">'.$regular_price.'</div>'.$_p_price;
+                            }
+            				$html_content .= '<div class="price">'.$_p_price.'</div>';
+            		}  
                 }
                 else
                 {
