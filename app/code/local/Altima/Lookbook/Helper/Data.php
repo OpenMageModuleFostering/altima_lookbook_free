@@ -54,7 +54,32 @@ class Altima_Lookbook_Helper_Data extends Mage_Core_Helper_Abstract
     public function getAllowedExtensions()
 	{
 		return Mage::getStoreConfig('lookbook/general/allowed_extensions');
-	}        
+	} 
+
+    public function getEffects()
+	{
+		return Mage::getStoreConfig('lookbook/general/effects');
+	}
+    public function getNavigation()
+	{
+		return Mage::getStoreConfig('lookbook/general/navigation');
+	}   
+    public function getNavigationHover()
+	{
+		return Mage::getStoreConfig('lookbook/general/navigation_hover');
+	}
+    public function getThumbnails()
+	{
+		return Mage::getStoreConfig('lookbook/general/thumbnails');
+	} 
+    public function getPause()
+	{
+		return Mage::getStoreConfig('lookbook/general/pause');
+	} 
+    public function getTransitionDuration()
+	{
+		return Mage::getStoreConfig('lookbook/general/transition_duration');
+	}            
 	/**
 	* Returns the resized Image URL
 	*

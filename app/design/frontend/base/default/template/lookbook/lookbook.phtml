@@ -27,172 +27,57 @@ if ($helper->getEnabled()) :
     
     $width = $helper->getMaxImageWidth();
     $height = $helper->getMaxImageHeight();
-    $skin_img_folder = $this->getSkinUrl('lookbook/images/');       
+    $effects = $helper->getEffects();
+    if (!$effects || $effects=='') $effects = 'random';
+    $navigation = ($helper->getNavigation()==1) ? 'true' : 'false';
+    $navigationHover = ($helper->getNavigationHover()==1) ? 'true' : 'false';
+    $thumbnails = ($helper->getThumbnails()==1) ? 'true' : 'false';
+    $pause = ($helper->getPause()) ? $helper->getPause() : 7000;
+    $trans_period = ($helper->getTransitionDuration()) ? $helper->getTransitionDuration() : 1500;       
     $hotspots = array();
     
     if ($makets->getSize()) :
     ?>
-    <style type="text/css">
-    #lookbook {
-    	width:<?php echo $width+40;?>px;
-    	height:<?php echo $height+70;?>px;
-    }
-    
-    .slides_container {
-    	width:<?php echo $width?>px;
-    }
-    
-    .slides_container div.slide {
-    	width:<?php echo $width?>px;
-    	height:<?php echo $height?>px;
-    }
-    
-    #slides .next,#slides .prev {
-    	top:<?php echo $height/2-21?>px;
-    	left:-24px;
-    }
-    
-    #slides .next {
-    	left:<?php echo $width?>px;
-    }
-    
-    .caption {
-        	width:<?php echo $width?>px;
-    }
-    
-    .pagination {
-    	width:<?php echo 16*$makets->getSize()?>px;
-    }
-    </style>
-    		<div id="lookbook">
-    			<div id="slides" class="slides">
-    				<div class="slides_container">
-                    <?php foreach ($makets as $image): ?>
-    					<div class="slide">
-                            <?php echo base64_decode('PGRpdiBpZD0iYWR2X2xpbmsiPjxkaXY+UG93ZXJlZCBieSA8YSBocmVmPSJodHRwOi8vYmxvZy5hbHRpbWEubmV0LmF1L2xvb2tib29rLW1hZ2VudG8tZXh0ZW5zaW9uLyIgdGl0bGU9IkFsdGltYSBXZWIgU3lzdGVtcyIgdGFyZ2V0PSJfYmxhbmsiPkFsdGltYTwvYT48L2Rpdj48L2Rpdj4=');?>
-    						<img src="<?php echo $helper->getResizedUrl($image->getImage(), $width, $height);?>" alt="Slide <?php echo $image->getId();?>"/>
-    					    <div class="caption" style="bottom:0;">
-    							<p><?php echo $image->getName();?></p>
-    						</div>
-                        </div>
-                        <?php $hotspots[] = $helper->getHotspotsWithProductDetails($image->getHotspots()); ?>
-                    <?php endforeach; ?>
-    				</div>
-    				<a href="#" class="prev"><img src="<?php echo $skin_img_folder;?>arrow-prev.png" width="24" height="43" alt="Arrow Prev"/></a>
-    				<a href="#" class="next"><img src="<?php echo $skin_img_folder;?>arrow-next.png" width="24" height="43" alt="Arrow Next"/></a>
-    			</div>
-    		</div>
+    <div class="camera_wrap camera_black_skin" id="lookbook" style="width:<?php echo $width;?>px;">
+         <?php foreach ($makets as $image): ?>
+        		<div data-thumb="<?php echo $helper->getResizedUrl($image->getData('image'), 100, 100);?>" data-src="<?php echo $helper->getResizedUrl($image->getData('image'), $width, $height);?>">
+                <?php echo base64_decode('PGRpdiBpZD0iYWR2X2xpbmsiPjxkaXY+UG93ZXJlZCBieSA8YSBocmVmPSJodHRwOi8vc2hvcC5hbHRpbWEubmV0LmF1L21hZ2VudG8tZXh0ZW5zaW9ucy5odG1sIiB0aXRsZT0iQWx0aW1hIFdlYiBTeXN0ZW1zIiB0YXJnZXQ9Il9ibGFuayI+QWx0aW1hPC9hPjwvZGl2PjwvZGl2Pg==');?>
+                     <img src="<?php echo $helper->getResizedUrl($image->getData('image'), $width, $height);?>" alt="Slide <?php echo $image->getId();?>"/>
+                     <?php if($image->getName()!='') :?>
+                         <div class="camera_caption fadeFromBottom">
+                             <?php echo $image->getName();?>
+                         </div>
+                     <?php endif;?>
+                </div>
+                <?php $hotspots[] = $helper->getHotspotsWithProductDetails($image->getHotspots()); ?>
+        <?php endforeach; ?>
+    </div>
+
     <script type="text/javascript">
      //<![CDATA[
     		jQuery(document).ready(function(){
-    			jQuery('#lookbook .slides').slides({
-    				preload: true,
-    				preloadImage: '<?php echo $skin_img_folder;?>loading.gif',
-    				play: 5000,
-    				pause: 2500,
-    				hoverPause: true,
-                    hotspots:<?php echo json_encode($hotspots);?>,
-    				animationStart: function(current){
-    					jQuery('#lookbook .caption').animate({
-    						bottom:-35
-    					},100);
-                        jQuery('#lookbook .hotspot:visible').each(function() {
-                               jQuery(this).remove();
-                        });
-    				},
-    				animationComplete: function(current){
-    					jQuery('#lookbook .caption').animate({
-    						bottom:0
-    					},200);
-                        var spots = this.hotspots[current-1];
-                        SetHotspots(spots);
-    				},
-    				slidesLoaded: function() {
-    					jQuery('#lookbook .caption').animate({
-    						bottom:0
-    					},200);
-                        var spots = this.hotspots[0];
-                        SetHotspots(spots);
-    				}
-    			});
-                
-                function SetHotspots(hotspots) {
-			if (!hotspots) return false;
-                        var i=0;
-                        hotspots.each(function() {
-                              if (!document.getElementById(hotspots[i].id)) {
-                                  jQuery('#lookbook .slide:visible').append('<div class="hotspot" id="'+hotspots[i].id+'" style="left:'+hotspots[i].left+'px; top:'+hotspots[i].top+'px; width:'+hotspots[i].width+'px; height:'+hotspots[i].height+'px;">'+hotspots[i].text+'</div>');
-                                  
-                                  var infoblock = jQuery('#lookbook .slide:visible #'+hotspots[i].id).find('.product-info');
-                                  var slide = jQuery('#lookbook .slide:visible');
-                                  var imgwidth = slide.width();
-                                  var infowidth = infoblock.width();             
-                                  var hspt_width_hf = parseInt(hotspots[i].width/2);
-                                  var leftposition = hotspots[i].left+hspt_width_hf+7;                
-                                  infoblock.find('.info-icon').css('left',hspt_width_hf+'px');                        
-                                   if (((leftposition + infowidth + 10)> imgwidth) && (leftposition>(imgwidth-leftposition))) 
-                                   {
-                                        if ( jQuery.browser.msie && jQuery.browser.version=='8.0') {
-                                            if (leftposition-5<infowidth) {
-                                            infoblock.css('width', leftposition-20 +'px');
-                                            infowidth = infoblock.width();                                            
-                                            }
-                                            infoblock.css('left', hspt_width_hf-7-infowidth-2*parseInt(infoblock.css('padding-left'))+'px');
-                                        }
-                                        else
-                                        {
-                                            infoblock.css('left', '');
-                                            infoblock.css('right', hspt_width_hf+7+'px');                                  
-                                        } 
-                                        if (leftposition-5<infowidth) {
-                                            infoblock.css('width', leftposition-20 +'px');
-                                            infowidth = infoblock.width();
-                                        }                                            
-                                   }
-                                   else
-                                   {
-                                       infoblock.css('left', hspt_width_hf+7 + 'px');                                      
-                                       if ((imgwidth-leftposition-5)<infowidth) {
-                                            infoblock.css('width', imgwidth-leftposition-20 +'px');
-                                            infowidth = infoblock.width();                                            
-                                        }                                        
-                                   }
-                                 
-                                  var imgheight = slide.height();
-                                  var infoheight = infoblock.height(); 
-                                  var hspt_height_hf = parseInt(hotspots[i].height/2);
-                                  var topposition = hotspots[i].top+hspt_height_hf; 
-                                  if (((topposition + infoheight + 20)> imgheight) && (topposition>(imgheight-topposition))) 
-                                   {
-                                        if ( jQuery.browser.msie && jQuery.browser.version=='8.0') {
-                                            if (topposition-5<infoheight) {
-                                             infoblock.css('height', topposition-10 +'px');
-                                             infoheight = infoblock.height();                                            
-                                            }
-                                            infoblock.css('top', hspt_height_hf-infoheight-2*parseInt(infoblock.css('padding-top'))+'px');
-                                        }
-                                        else
-                                        {
-                                            infoblock.css('top', '');
-                                            infoblock.css('bottom', hspt_height_hf+'px');                                    
-                                        }
-                                        if (topposition-5<infoheight) {
-                                            infoblock.css('height', topposition-10 +'px');
-                                            infoheight = infoblock.height();                                            
-                                        }
-                                   }
-                                   else
-                                   {
-                                       infoblock.css('top', hspt_height_hf + 'px');
-                                       if ((imgheight-topposition-5)<infoheight) {
-                                            infoblock.css('height', imgheight-topposition-10 +'px');
-                                            infoheight = infoblock.height();                                            
-                                        }
-                                   }                             
-                                  i++;
-                              }                                
-                        });  
-                };
+                jQuery('#lookbook').camera({
+                        fx: '<?php echo $effects;?>',
+                        navigation: <?php echo $navigation;?>,
+                        navigationHover: <?php echo $navigationHover;?>,
+                     <?php if ($thumbnails=='true'): ?>
+                		pagination: false,
+            			thumbnails: true,
+                     <?php else: ?>
+                		pagination: true,
+            			thumbnails: false,
+                     <?php endif; ?>
+                        time: <?php echo $pause;?>,
+                        trans_period: <?php echo $trans_period;?>,
+                        piePosition: 'leftTop',       
+                        height: '<?php echo $height;?>px',
+                        width: '<?php echo $width;?>px'                      
+            	});    
+                var hotspots = <?php echo json_encode($hotspots);?>;
+                jQuery('#lookbook .cameraContent').each(function(){
+                     var ind = jQuery(this).index();
+                     jQuery.setHotspots(jQuery(this), hotspots[ind]);                    
+                });
     		});      
      //]]>
     </script>

@@ -34,7 +34,9 @@ class Altima_Lookbook_Model_Layout_Generate_Observer {
                             <action method="addCss"><stylesheet>lookbook/css/hotspots.css</stylesheet></action>
                             <action method="addJs"><script>jquery/jquery-1.8.2.min.js</script></action>
             		    <action method="addJs"><script>jquery/jquery.noconflict.js</script></action>                 
-				<action method="addItem"><type>skin_js</type><name>lookbook/js/slides.min.jquery.js</name></action> 
+        				<action method="addItem"><type>skin_js</type><name>lookbook/js/jquery.easing.1.3.js</name></action>
+                        <action method="addItem"><type>skin_js</type><name>lookbook/js/camera.min.js</name></action>
+                        <action method="addItem"><type>skin_js</type><name>lookbook/js/hotspots.js</name></action>
                         </reference>';
                         $page->setLayoutUpdateXml($updates.$newupdates);
                     } 
