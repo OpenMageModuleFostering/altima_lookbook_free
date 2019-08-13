@@ -1,0 +1,201 @@
+<?php
+/**
+ * Altima Lookbook Free Extension
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category   Altima
+ * @package    Altima_LookbookFree
+ * @author     Altima Web Systems http://altimawebsystems.com/
+ * @email      support@altima.net.au
+ * @copyright  Copyright (c) 2012 Altima Web Systems (http://altimawebsystems.com/)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+$helper = Mage::helper('lookbook');
+
+if ($helper->getEnabled()) :
+
+    $makets = $this->getCollection();
+    
+    $width = $helper->getMaxImageWidth();
+    $height = $helper->getMaxImageHeight();
+    $skin_img_folder = $this->getSkinUrl('lookbook/images/');       
+    $hotspots = array();
+    
+    if ($makets->getSize()) :
+    ?>
+    <style type="text/css">
+    #lookbook {
+    	width:<?php echo $width+40;?>px;
+    	height:<?php echo $height+70;?>px;
+    }
+    
+    .slides_container {
+    	width:<?php echo $width?>px;
+    }
+    
+    .slides_container div.slide {
+    	width:<?php echo $width?>px;
+    	height:<?php echo $height?>px;
+    }
+    
+    #slides .next,#slides .prev {
+    	top:<?php echo $height/2-21?>px;
+    	left:-24px;
+    }
+    
+    #slides .next {
+    	left:<?php echo $width?>px;
+    }
+    
+    .caption {
+        	width:<?php echo $width?>px;
+    }
+    
+    .pagination {
+    	width:<?php echo 16*$makets->getSize()?>px;
+    }
+    </style>
+    		<div id="lookbook">
+    			<div id="slides" class="slides">
+    				<div class="slides_container">
+                    <?php foreach ($makets as $image): ?>
+    					<div class="slide">
+                            <?php echo base64_decode('PGRpdiBpZD0iYWR2X2xpbmsiPjxkaXY+UG93ZXJlZCBieSA8YSBocmVmPSJodHRwOi8vYmxvZy5hbHRpbWEubmV0LmF1L2xvb2tib29rLW1hZ2VudG8tZXh0ZW5zaW9uLyIgdGl0bGU9IkFsdGltYSBXZWIgU3lzdGVtcyIgdGFyZ2V0PSJfYmxhbmsiPkFsdGltYTwvYT48L2Rpdj48L2Rpdj4=');?>
+    						<img src="<?php echo $helper->getResizedUrl($image->getImage(), $width, $height);?>" alt="Slide <?php echo $image->getId();?>"/>
+    					    <div class="caption" style="bottom:0;">
+    							<p><?php echo $image->getName();?></p>
+    						</div>
+                        </div>
+                        <?php $hotspots[] = $helper->getHotspotsWithProductDetails($image->getHotspots()); ?>
+                    <?php endforeach; ?>
+    				</div>
+    				<a href="#" class="prev"><img src="<?php echo $skin_img_folder;?>arrow-prev.png" width="24" height="43" alt="Arrow Prev"/></a>
+    				<a href="#" class="next"><img src="<?php echo $skin_img_folder;?>arrow-next.png" width="24" height="43" alt="Arrow Next"/></a>
+    			</div>
+    		</div>
+    <script type="text/javascript">
+     //<![CDATA[
+    		$j(document).ready(function(){
+    			$j('#lookbook .slides').slides({
+    				preload: true,
+    				preloadImage: '<?php echo $skin_img_folder;?>loading.gif',
+    				play: 5000,
+    				pause: 2500,
+    				hoverPause: true,
+                    hotspots:<?php echo json_encode($hotspots);?>,
+    				animationStart: function(current){
+    					$j('#lookbook .caption').animate({
+    						bottom:-35
+    					},100);
+                        $j('#lookbook .hotspot:visible').each(function() {
+                               $j(this).remove();
+                        });
+    				},
+    				animationComplete: function(current){
+    					$j('#lookbook .caption').animate({
+    						bottom:0
+    					},200);
+                        var spots = this.hotspots[current-1];
+                        SetHotspots(spots);
+    				},
+    				slidesLoaded: function() {
+    					$j('#lookbook .caption').animate({
+    						bottom:0
+    					},200);
+                        var spots = this.hotspots[0];
+                        SetHotspots(spots);
+    				}
+    			});
+                
+                function SetHotspots(hotspots) {
+			if (!hotspots) return false;
+                        var i=0;
+                        hotspots.each(function() {
+                              if (!document.getElementById(hotspots[i].id)) {
+                                  $j('#lookbook .slide:visible').append('<div class="hotspot" id="'+hotspots[i].id+'" style="left:'+hotspots[i].left+'px; top:'+hotspots[i].top+'px; width:'+hotspots[i].width+'px; height:'+hotspots[i].height+'px;">'+hotspots[i].text+'</div>');
+                                  
+                                  var infoblock = $j('#lookbook .slide:visible #'+hotspots[i].id).find('.product-info');
+                                  var slide = $j('#lookbook .slide:visible');
+                                  var imgwidth = slide.width();
+                                  var infowidth = infoblock.width();             
+                                  var hspt_width_hf = parseInt(hotspots[i].width/2);
+                                  var leftposition = hotspots[i].left+hspt_width_hf+7;                
+                                  infoblock.find('.info-icon').css('left',hspt_width_hf+'px');                        
+                                   if (((leftposition + infowidth + 10)> imgwidth) && (leftposition>(imgwidth-leftposition))) 
+                                   {
+                                        if ( $j.browser.msie && $j.browser.version=='8.0') {
+                                            if (leftposition-5<infowidth) {
+                                            infoblock.css('width', leftposition-20 +'px');
+                                            infowidth = infoblock.width();                                            
+                                            }
+                                            infoblock.css('left', hspt_width_hf-7-infowidth-2*parseInt(infoblock.css('padding-left'))+'px');
+                                        }
+                                        else
+                                        {
+                                            infoblock.css('left', '');
+                                            infoblock.css('right', hspt_width_hf+7+'px');                                  
+                                        } 
+                                        if (leftposition-5<infowidth) {
+                                            infoblock.css('width', leftposition-20 +'px');
+                                            infowidth = infoblock.width();
+                                        }                                            
+                                   }
+                                   else
+                                   {
+                                       infoblock.css('left', hspt_width_hf+7 + 'px');                                      
+                                       if ((imgwidth-leftposition-5)<infowidth) {
+                                            infoblock.css('width', imgwidth-leftposition-20 +'px');
+                                            infowidth = infoblock.width();                                            
+                                        }                                        
+                                   }
+                                 
+                                  var imgheight = slide.height();
+                                  var infoheight = infoblock.height(); 
+                                  var hspt_height_hf = parseInt(hotspots[i].height/2);
+                                  var topposition = hotspots[i].top+hspt_height_hf; 
+                                  if (((topposition + infoheight + 20)> imgheight) && (topposition>(imgheight-topposition))) 
+                                   {
+                                        if ( $j.browser.msie && $j.browser.version=='8.0') {
+                                            if (topposition-5<infoheight) {
+                                             infoblock.css('height', topposition-10 +'px');
+                                             infoheight = infoblock.height();                                            
+                                            }
+                                            infoblock.css('top', hspt_height_hf-infoheight-2*parseInt(infoblock.css('padding-top'))+'px');
+                                        }
+                                        else
+                                        {
+                                            infoblock.css('top', '');
+                                            infoblock.css('bottom', hspt_height_hf+'px');                                    
+                                        }
+                                        if (topposition-5<infoheight) {
+                                            infoblock.css('height', topposition-10 +'px');
+                                            infoheight = infoblock.height();                                            
+                                        }
+                                   }
+                                   else
+                                   {
+                                       infoblock.css('top', hspt_height_hf + 'px');
+                                       if ((imgheight-topposition-5)<infoheight) {
+                                            infoblock.css('height', imgheight-topposition-10 +'px');
+                                            infoheight = infoblock.height();                                            
+                                        }
+                                   }                             
+                                  i++;
+                              }                                
+                        });  
+                };
+    		});      
+     //]]>
+    </script>
+    <?php endif;?>
+<?php endif;?>
+

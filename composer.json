@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/Altima_lookbook_free",
+    "type": "magento-module",
+    "license": "Open-Software-License-(OSL-3.0)",
+    "homepage": "",
+    "description": "Create interactive gallery - photos of your goods in environment with hotspots linked to product pages",
+    "authors": [
+    {
+        "name": "Alexander",
+        "email": "alex@altima.net.au"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}
