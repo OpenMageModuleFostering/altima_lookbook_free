@@ -29,7 +29,10 @@ class Altima_Lookbook_Adminhtml_Lookbook_LookbookController extends Mage_Adminht
 		
 		return $this;
 	}   
- 
+     protected function _isAllowed() {
+        return true;
+    }
+
 	public function indexAction() {
 		$this->_initAction()
 			->renderLayout();

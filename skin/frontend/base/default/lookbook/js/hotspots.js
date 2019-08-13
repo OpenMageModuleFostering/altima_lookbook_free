@@ -1,100 +1,105 @@
 jQuery.extend({
-        setHotspots : function(slide, hotspots) {
-            
-                if (!hotspots) return;
-                var i=0;
-                hotspots.each(function() {
-                   if (!document.getElementById(hotspots[i].id)) {
-                       /******/
-                       var imgwidth = slide.width();
-                       var scale= imgwidth/hotspots[i].imgW;
-                       console.log('scale:'+scale);
-                       console.log('hotspots[i].imgH:'+hotspots[i].imgH+' hotspots[i].imgW:'+hotspots[i].imgW);
-                       console.log('slide.width:'+slide.width()+' slide.height:'+slide.height());
-                       if(typeof hotspots[i].imgW == 'undefined' || hotspots[i].imgW === null){scale = 1;hotspots[i].imgH = slide.height();}
-                       var offsetH = parseInt((hotspots[i].imgH*scale - slide.height())/2);
-                       /******/
-                       console.log('offsetH:'+offsetH);
-                       console.log('left:'+parseInt(hotspots[i].left*scale)+' top:'+parseInt(hotspots[i].top*scale - offsetH));
-                       slide.append('<div class="hotspot" id="'+hotspots[i].id+'" style="left:'+parseInt(hotspots[i].left*scale)+'px; top:'+parseInt(hotspots[i].top*scale - offsetH)+'px; width:'+parseInt(hotspots[i].width*scale)+'px; height:'+parseInt(hotspots[i].height*scale)+'px;">'+hotspots[i].text+'</div>');
-                       var infoblock = slide.find('#'+hotspots[i].id +' .product-info');
-                       var infowidth = infoblock.width();             
-                       var hspt_width_hf = parseInt(hotspots[i].width*scale/2);
-                       var leftposition = hotspots[i].left*scale+hspt_width_hf+7;                
-                       infoblock.find('.info-icon').css('left',hspt_width_hf+'px');     
-                       if (((leftposition + infowidth + 10)> imgwidth) && (leftposition>(imgwidth-leftposition))) 
-                       {
-                          if ( jQuery.browser.msie && jQuery.browser.version=='8.0') {
-                              if (leftposition-5<infowidth) {
-                              infoblock.css('width', leftposition-20 +'px');
-                              infowidth = infoblock.width();      
-                              }
-                              infoblock.css('left', hspt_width_hf-7-infowidth-2*parseInt(infoblock.css('padding-left'))+'px');
-                          }
-                          else
-                          {
-                              infoblock.css('left', '');
-                              infoblock.css('right', hspt_width_hf+7+'px');               
-                          } 
-                          
-                          if (leftposition-5<infowidth) {
-                              infoblock.css('width', leftposition-20 +'px');
-                              infowidth = infoblock.width();
-                          }      
-                        }
-                        else
-                        {
-                             infoblock.css('left', hspt_width_hf+7 + 'px');
-                             if ((imgwidth-leftposition-5)<infowidth) {
-                                  infoblock.css('width', imgwidth-leftposition-20 +'px');
-                                  infowidth = infoblock.width();      
-                              }  
-                        }
-                        var imgheight = slide.height();
-                        var infoheight = infoblock.height(); 
+    setHotspots : function(slide, hotspots) {
+        if (!hotspots) return;
+        
+        jQuery.each(hotspots, function(i, hotspot) {
+            if (!document.getElementById(hotspot.id)) {
+                // scales
+                var imgwidth = slide.width();
+                var scale    = imgwidth/hotspot.imgW;
+                if(typeof hotspot.imgW == 'undefined' || hotspot.imgW === null) {
+                    scale = 1;
+                    hotspot.imgH = slide.height();
+                }
+                
+                // main sizes, hs - hotspot
+                var offsetH = parseInt((hotspot.imgH*scale - slide.height())/2);
+                var hs_left   = hotspot.left / (hotspot.imgW / 100);
+                var hs_top    = hotspot.top / (hotspot.imgH / 100);
+                var hs_width  = hotspot.width / (hotspot.imgW / 100);
+                var hs_height = hotspot.height / (hotspot.imgH / 100);
+                
+                var hotspotHTML = '<div class="hotspot" id="'+hotspot.id+'" \n\
+                    style="left:' + hs_left + '%; top:' + hs_top + '%; \n\
+                    width:' + hs_width + '%; height:' + hs_height + '%;">\n\
+                    ' + hotspot.text + '</div>';
+                slide.append(hotspotHTML);
+                
+                var infoblock = slide.find('#'+hotspot.id +' .product-info');
+                var infowidth = parseInt(infoblock.actual('outerWidth'));
+                var hspt_width_hf = parseInt(hotspot.width * scale / 2);
+                var leftposition = hotspot.left * scale + hspt_width_hf + 7;
+                infoblock.find('.info-icon').css('left', hspt_width_hf + 'px');
 
-                        var hspt_height_hf = parseInt(hotspots[i].height*scale/2);
-                        var topposition = hotspots[i].top*scale+hspt_height_hf; 
-                        if (((topposition + infoheight + 30)> imgheight) && (topposition>(imgheight-topposition))) 
-                        {
-                          if ( jQuery.browser.msie && jQuery.browser.version=='8.0') {
-                              if (topposition-5<infoheight) {
-                               infoblock.css('height', topposition-10 +'px');
-                               infoheight = infoblock.height();      
-                              }
-                              infoblock.css('top', hspt_height_hf-infoheight-2*parseInt(infoblock.css('padding-top'))+'px');
-                          }
-                          else
-                          {
-                              infoblock.css('top', '');
-                              infoblock.css('bottom', hspt_height_hf+'px');                 
-                          }
-                          if (topposition-5<infoheight) {
-                              infoblock.css('height', topposition-10 +'px');
-                              infoheight = infoblock.height();      
-                          }
+                if (((leftposition + infowidth + 10) > imgwidth) 
+                  && (leftposition > (imgwidth - leftposition)))
+                {
+                    if (jQuery.browser.msie && jQuery.browser.version == '8.0') {
+                        if (leftposition - 5 < infowidth) {
+                            infoblock.css('width', leftposition - 20 + 'px');
+                            infowidth = infoblock.width();
                         }
-                        else
-                        {
-                             infoblock.css('top', hspt_height_hf + 'px');
-                             if ((imgheight-topposition-5)<infoheight) {
-                                  infoblock.css('height', imgheight-topposition-10 +'px');
-                                  infoheight = infoblock.height();      
-                             }
-                        }     
-                        /////// set position for hotspot-icon /////////////
-                        console.log('hotspots[i].icon_width:'+hotspots[i].icon_width);
-                        var icon = slide.find('#'+hotspots[i].id +' .hotspot-icon');
-                        var icon_left = hspt_width_hf -15/* - (hotspots[i].icon_width/2)*/;
-                        var icon_top = hspt_height_hf -15/* - (hotspots[i].icon_height/2)*/;
-                        icon.css('left',parseInt(icon_left));
-                        icon.css('top',parseInt(icon_top));
-                        ///////////////////////////////////////////////////
-                        
-                        i++;
-                  }             
-              });
-        }
+                        infoblock.css('left', '50%');
+                        infoblock.css('margin-left', '-' + infowidth - 2 * parseInt(infoblock.css('padding-left')) + 'px');
+                    } else {
+                        infoblock.css('left', '');
+                        infoblock.css('right', '50%');
+                    }
+
+                    if (leftposition - 5 < infowidth) {
+                        infoblock.css('width', leftposition - 20 + 'px');
+                        infowidth = infoblock.width();
+                    }
+                } else {
+                    infoblock.css('left', '50%');
+                    if ((imgwidth - leftposition - 5) < infowidth) {
+                        infoblock.css('width', imgwidth - leftposition - 20 + 'px');
+                        infowidth = infoblock.width();
+                    }
+                }
+
+                var imgheight = parseInt(slide.height());
+                var infoheight = parseInt(infoblock.actual('outerHeight'));
+                var hspt_height_hf = parseInt(hotspot.height * scale / 2);
+                var topposition = hotspot.top * scale + hspt_height_hf;
+                if (((topposition + infoheight + 5) > imgheight) && (topposition > (imgheight - topposition)))
+                {
+                    if (jQuery.browser.msie && jQuery.browser.version == '8.0') {
+                        if (topposition - 5 < infoheight) {
+                            infoblock.css('height', topposition - 10 + 'px');
+                            infoheight = infoblock.height();
+                        }
+                        infoblock.css('top', '50%');
+                        infoblock.css('margin-top', '-' + infoheight - 2 * parseInt(infoblock.css('padding-top')) + 'px');
+                    } else {
+                        infoblock.css('top', '');
+                        infoblock.css('bottom', '50%');
+                    }
+                    
+                    if (topposition - 5 < infoheight) {
+                        infoblock.css('top', '50%');
+                        infoblock.css('height', topposition - 10 + 'px');
+                        infoheight = infoblock.height();
+                    }
+                } else {
+                    infoblock.css('top', '50%');
+                    if ((imgheight - topposition - 5) < infoheight) {
+                        infoblock.css('height', imgheight - topposition - 10 + 'px');
+                        infoheight = infoblock.height();
+                    }
+                }
+                
+                //set position for hotspot-icon
+                var icon = slide.find('#'+hotspot.id +' .hotspot-icon');
+                icon.on('load', function() {
+                    icon.css('left', '50%');
+                    icon.css('top', '50%');
+                    icon.css('margin-left', '-' + icon.actual('width') / 2 + 'px');
+                    icon.css('margin-top', '-' + icon.actual('height') / 2 + 'px');
+                });
+            }
+      });
+    }
 });
   
 jQuery(document).ready(function() {
