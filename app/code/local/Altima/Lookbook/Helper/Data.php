@@ -93,37 +93,37 @@ class Altima_Lookbook_Helper_Data extends Mage_Core_Helper_Abstract
 	*By doing this new image will be created in Root/media/lookbook/101X65/example.jpg
 	*/
 
-    public function getResizedUrl($imgUrl,$x,$y=NULL){
+    public function getResizedUrl($imgUrl, $x, $y = NULL) {
 
-        $imgPath=$this->splitImageValue($imgUrl,"path");
-        $imgName=$this->splitImageValue($imgUrl,"name");
- 
+        $imgPath = $this->splitImageValue($imgUrl, "path");
+        $imgName = $this->splitImageValue($imgUrl, "name");
+
         /**
          * Path with Directory Seperator
          */
-        $imgPath=str_replace("/",DS,$imgPath);
- 
+        $imgPath = str_replace("/", DS, $imgPath);
+
         /**
          * Absolute full path of Image
          */
-        $imgPathFull=Mage::getBaseDir("media").DS.$imgPath.DS.$imgName;
- 
+        $imgPathFull = Mage::getBaseDir("media") . DS . $imgPath . DS . $imgName;
+
         /**
          * If Y is not set set it to as X
          */
-        $width=$x;
-        $y?$height=$y:$height=$x;
- 
+        $width = $x;
+        $y ? $height = $y : $height = $x;
+
         /**
          * Resize folder is widthXheight
          */
-        $resizeFolder=$width."X".$height;
- 
+        $resizeFolder = $width . "X" . $height;
+
         /**
          * Image resized path will then be
          */
-        $imageResizedPath=Mage::getBaseDir("media").DS.$imgPath.DS.$resizeFolder.DS.$imgName;
- 
+        $imageResizedPath = Mage::getBaseDir("media") . DS . $imgPath . DS . $resizeFolder . DS . $imgName;
+
         /**
          * First check in cache i.e image resized path
          * If not in cache then create image of the width=X and height = Y
@@ -133,41 +133,36 @@ class Altima_Lookbook_Helper_Data extends Mage_Core_Helper_Abstract
             $imageObj->constrainOnly(FALSE);
             $imageObj->keepAspectRatio(TRUE);
             $imageObj->keepTransparency(TRUE);
-            /***********************************/
-            //$imageObj->resize($width,$height);
             $imageObj->keepFrame(FALSE);
-            if (($width / $height) > ($imageObj->getOriginalWidth() / $imageObj->getOriginalHeight())){
-                  $imageObj->resize($width, null);
-            }else{
-                  $imageObj->resize(null, $height);
-            }            
+            if (($width / $height) > ($imageObj->getOriginalWidth() / $imageObj->getOriginalHeight())) {
+                $imageObj->resize($width, null);
+            } else {
+                $imageObj->resize(null, $height);
+            }
             $cropX = 0;
             $cropY = 0;
-  if ($imageObj->getOriginalWidth() > $width)
-  {
-    $cropX = intval(($imageObj->getOriginalWidth() - $width) / 2);
-  }
-  if ($imageObj->getOriginalHeight() > $height)
-  {
-    $cropY = intval(($imageObj->getOriginalHeight() - $height) / 2);
-  }
-            
-            $imageObj->crop($cropY,$cropX,$cropX,$cropY);
-            /********************/
+            if ($imageObj->getOriginalWidth() > $width) {
+                $cropX = intval(($imageObj->getOriginalWidth() - $width) / 2);
+            }
+            if ($imageObj->getOriginalHeight() > $height) {
+                $cropY = intval(($imageObj->getOriginalHeight() - $height) / 2);
+            }
+
+            $imageObj->crop($cropY, $cropX, $cropX, $cropY);
             $imageObj->save($imageResizedPath);
         endif;
- 
+
         /**
          * Else image is in cache replace the Image Path with / for http path.
          */
-        $imgUrl=str_replace(DS,"/",$imgPath);
- 
+        $imgUrl = str_replace(DS, "/", $imgPath);
+
         /**
          * Return full http path of the image
          */
-        return Mage::getBaseUrl("media").$imgUrl."/".$resizeFolder."/".$imgName;
+        return Mage::getBaseUrl("media") . $imgUrl . "/" . $resizeFolder . "/" . $imgName;
     }
- 
+
     /**
      * Splits images Path and Name
      *

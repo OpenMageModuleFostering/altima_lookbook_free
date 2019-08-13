@@ -24,7 +24,7 @@
 <config>
     <modules>
         <Altima_Lookbook>
-            <version>1.1.0</version>
+            <version>1.1.1</version>
         </Altima_Lookbook>
     </modules>
     <frontend>
@@ -47,13 +47,13 @@
     </frontend>
     <admin>
         <routers>
-			<lookbook>
-				<use>admin</use>
-				<args>
-					<module>Altima_Lookbook</module>
-					<frontName>lookbook</frontName>
-				</args>
-			</lookbook>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <lookbook before="Mage_Adminhtml">Altima_Lookbook_Adminhtml</lookbook>
+                    </modules>
+                </args>
+            </adminhtml>
         </routers>
     </admin>
     <adminhtml>
@@ -62,9 +62,9 @@
                 <children>
                     <lookbook translate="title" module="lookbook">
                         <title>LookBook Free</title>
-		        <action>lookbook/adminhtml_lookbook</action>
+                        <action>adminhtml/lookbook_lookbook</action>
                     </lookbook>
-                 </children>
+                </children>
             </cms>
         </menu>
         <acl>
@@ -93,13 +93,13 @@
                 </admin>
             </resources>
         </acl>
-	<layout>
-		<updates>
-			<lookbook>
-				<file>lookbook.xml</file>
-			</lookbook>
-		</updates>
-	</layout>
+        <layout>
+            <updates>
+                <lookbook>
+                    <file>lookbook.xml</file>
+                </lookbook>
+            </updates>
+        </layout>
     </adminhtml>
     <default>
         <lookbook>
@@ -160,15 +160,15 @@
             </lookbook>
         </helpers>
         <events>
-			<cms_page_render>
-				<observers>
-					<lookbook_layout_generate_observer>
-						<type>singleton</type>
-						<class>lookbook/layout_generate_observer</class>
-						<method>addHeadItems</method>
-					</lookbook_layout_generate_observer>
-				</observers>
-			</cms_page_render>
-	</events>
+            <cms_page_render>
+                <observers>
+                    <lookbook_layout_generate_observer>
+                        <type>singleton</type>
+                        <class>lookbook/layout_generate_observer</class>
+                        <method>addHeadItems</method>
+                    </lookbook_layout_generate_observer>
+                </observers>
+            </cms_page_render>
+        </events>
     </global>
 </config>

@@ -76,7 +76,7 @@ class Altima_Lookbook_Block_Adminhtml_Lookbook_Edit_Form_Element_Hotspots extend
                         function checkSKU(){
                                     result = "";
                                     request = new Ajax.Request(
-                                    "'. Mage::getUrl("lookbook/adminhtml_lookbook/getproduct", array('_secure'=>true)).'",
+                                    "'. Mage::getUrl("adminhtml/lookbook_lookbook/getproduct", array('_secure'=>true)).'",
                                     {
                                         method: \'post\',
                                         asynchronous: false,

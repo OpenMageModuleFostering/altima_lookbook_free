@@ -158,7 +158,7 @@ class Altima_Lookbook_Block_Adminhtml_System_Config_Template_Renderer_Category
 
     public function getLoadTreeUrl($expanded=null)
     {
-        return $this->getUrl('lookbook/adminhtml_lookbook/categoriesJson', array('_current'=>true));
+        return $this->getUrl('adminhtml/lookbook_lookbook/categoriesJson', array('_current'=>true));
     }
 
     /**

@@ -30,7 +30,7 @@ class Altima_Lookbook_Block_Adminhtml_Lookbook_Edit_Form_Element_Lookbookimage e
  public function getElementHtml()
  {
     $block_class =  Mage::getBlockSingleton('lookbook/adminhtml_lookbook');
-    $upload_action  = Mage::getUrl('lookbook/adminhtml_lookbook/upload', array('_secure'=>true)).'?isAjax=true';
+    $upload_action  = Mage::getUrl('adminhtml/lookbook_lookbook/upload', array('_secure'=>true)).'?isAjax=true';
     $media_url  = Mage::getBaseUrl('media');
     $upload_folder_path = str_replace("/",DS, Mage::getBaseDir("media").DS);
     $helper = Mage::helper('lookbook');

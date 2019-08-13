@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<!--
+<?php
 /**
  * Altima Lookbook Free Extension
  *
@@ -20,17 +19,11 @@
  * @copyright  Copyright (c) 2012 Altima Web Systems (http://altimawebsystems.com/)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
--->
-<config>
-    <modules>
-        <Altima_Lookbook>
-            <active>true</active>
-            <codePool>local</codePool>
-            <depends>
-                <Mage_Core/>
-                <Mage_Adminhtml/>
-                <Mage_Catalog/>
-            </depends>
-        </Altima_Lookbook>
-    </modules>
-</config> 
+
+
+$installer = $this;
+/* @var $installer Mage_Core_Model_Resource_Setup */
+
+$installer->startSetup();
+
+$installer->endSetup();

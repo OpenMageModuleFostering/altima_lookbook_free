@@ -22,12 +22,12 @@
  */
 -->
 <layout version="0.1.0">
-    <lookbook_adminhtml_lookbook_index>
+    <adminhtml_lookbook_lookbook_index>
         <reference name="content">
             <block type="lookbook/adminhtml_lookbook" name="lookbook" />
         </reference>
-    </lookbook_adminhtml_lookbook_index>
-     <lookbook_adminhtml_lookbook_edit>
+    </adminhtml_lookbook_lookbook_index>
+     <adminhtml_lookbook_lookbook_edit>
         <reference name="head">
                 <action method="addCss"><stylesheet>lookbook/css/annotation.css</stylesheet></action>
                 <action method="addCss"><stylesheet>lookbook/css/fileuploader.css</stylesheet></action>
@@ -38,5 +38,5 @@
                  <action method="addJs"><script>lookbook/fileuploader.js</script></action>
                  <action method="addJs"><script>lookbook/json2.min.js</script></action>
         </reference>
-    </lookbook_adminhtml_lookbook_edit>
+    </adminhtml_lookbook_lookbook_edit>
 </layout>
