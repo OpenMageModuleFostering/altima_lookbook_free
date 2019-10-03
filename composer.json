@@ -1,7 +1,7 @@
 {
-    "name": "OpenMageModuleFostering\/Altima_lookbook_free",
+    "name": "openmage-module-fostering\/altima_lookbook_free",
     "type": "magento-module",
-    "license": "Open-Software-License-(OSL-3.0)",
+    "license": "OSL-3.0",
     "homepage": "",
     "description": "Create interactive gallery - photos of your goods in environment with hotspots linked to product pages",
     "authors": [
